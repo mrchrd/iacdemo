@@ -1,0 +1,23 @@
+[Unit]
+Description=The NGINX HTTP and reverse proxy server
+After=docker.service
+Requires=docker.service
+
+[Service]
+EnvironmentFile=/etc/default/%p
+ExecStartPre=/usr/bin/docker pull "${NGINX_DOCKER_IMAGE}"
+ExecStartPre=-/usr/bin/docker stop "%p"
+ExecStartPre=-/usr/bin/docker rm "%p"
+ExecStart=/usr/bin/docker run \
+  --name "%p" \
+  --net host \
+  --rm \
+  --volume "/etc/localtime:/etc/localtime:ro" \
+  --volume "${NGINX_HTML}:/usr/share/nginx/html:ro,z" \
+  "${NGINX_DOCKER_IMAGE}"
+ExecReload=/usr/bin/docker exec "%p" nginx -s reload
+ExecStop=-/usr/bin/docker stop "%p"
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

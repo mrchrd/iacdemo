@@ -1,0 +1,4 @@
+---
+
+nginx_html_dir: /srv/{{ nginx_service }}/html
+nginx_service: nginx

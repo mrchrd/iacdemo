@@ -1,0 +1,19 @@
+---
+
+- name: Check if Python is installed
+  raw: "{{ ansible_python_interpreter }} --version"
+  changed_when: false
+  check_mode: false
+  ignore_errors: true
+  register: r_python
+
+- name: Install Python
+  script: install_python.sh
+  when: r_python.rc != 0
+
+- name: Install Python libraries
+  pip:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - docker-py

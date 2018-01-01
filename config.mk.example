@@ -1,0 +1,15 @@
+export PROJECT_ROOT          ?= $(realpath $(CURDIR))
+export PROJECT               ?= $(shell basename $(PROJECT_ROOT))
+
+export AWS_ACCESS_KEY_ID     ?= _your_aws_access_key_
+export AWS_DEFAULT_REGION    ?= ca-central-1
+export AWS_SECRET_ACCESS_KEY ?= _your_aws_secret_access_key_
+
+export BUILD_DIR             := $(PROJECT_ROOT)/build
+export SRC_DIR               := $(PROJECT_ROOT)/src
+export STATE_DIR             := $(PROJECT_ROOT)/state
+
+export HTML_DIR              := $(BUILD_DIR)/html
+export SSH_KEY_DIR           := $(BUILD_DIR)/ssh-keys
+export TERRAFORM_BUILD_DIR   := $(BUILD_DIR)/terraform
+export TERRAFORM_STATE_DIR   := $(STATE_DIR)/terraform

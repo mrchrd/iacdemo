@@ -1,0 +1,35 @@
+---
+
+- name: Configure service
+  template:
+    dest: "{{ item.dest }}"
+    mode: u=rw,g=r,o=
+    src: "{{ item.src }}"
+  notify:
+    - Reload systemd
+    - Restart NGINX
+  with_items:
+    - dest: "/etc/default/{{ nginx_service }}"
+      src: nginx.default.j2
+    - dest: "/etc/systemd/system/{{ nginx_service }}.service"
+      src: nginx.service.j2
+
+- name: Make volume directories
+  file:
+    dest: "{{ item }}"
+    state: directory
+  with_items:
+    - "{{ nginx_html_dir }}"
+
+- name: Copy volume content
+  copy:
+    dest: "{{ nginx_html_dir }}/"
+    src: "{{ nginx_html_src }}/"
+
+- meta: flush_handlers
+
+- name: Enable service
+  service:
+    name: "{{ nginx_service }}"
+    enabled: true
+    state: started

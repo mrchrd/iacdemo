@@ -1,0 +1,12 @@
+---
+
+- hosts: all
+  become: true
+  gather_facts: false
+  roles:
+    - python
+
+- hosts: all
+  become: true
+  roles:
+    - nginx
